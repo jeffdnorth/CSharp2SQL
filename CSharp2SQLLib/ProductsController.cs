@@ -8,7 +8,7 @@ namespace CSharp2SQLLib
     public class ProductsController
     {
         private static Connection connection { get; set; }
-
+            
         public List<Product> GetAll()
         {
             var sql = "SELECT * from Products;";
@@ -29,10 +29,22 @@ namespace CSharp2SQLLib
                 };
                 products.Add(product);
             }
-            reader.Close();
+                reader.Close();
+
+                foreach(var product in products)
+                {
+                GetVendorForProduct(product);
+                }
          
-            return products;
+                 return products;
         }
+                
+
+        private void GetVendorForProduct(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
         public ProductsController(Connection connection)
         {
             ProductsController.connection = connection;

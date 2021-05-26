@@ -8,21 +8,70 @@ namespace CSharp2SQLLib
     public class SqlLib
     {
         public static string About { get; set; } = "About CSharp2SqlLib";
-
         public SqlConnection sqlconn { get; set; }
+
+        // delete method
+        public bool Delete (User user)
+        {
+            var sql = $"DELETE from Users " +
+                " Where Id = @id ; ";        
+            var sqlcmd = new SqlCommand(sql, sqlconn);
+            sqlcmd.Parameters.AddWithValue("@id", user.Id);        
+            var rowsAffected = sqlcmd.ExecuteNonQuery();         
+            //boolian expression returns true or false for a return of values esp boolian
+            return (rowsAffected == 1);           
+        }
+
+
+        //change method
+        public bool Change (User user)
+        {
+            var sql = $"Update Users Set " +
+              " Username = @username, " +
+              " Firstname = @firstname," +
+              " Lastname = @lastname," +
+              " Phone = @phone," +
+              " Email = @email," +
+              " IsReviewer = @isreviewer," +
+              " IsAdmin= @isadmin " +
+               "Where Id = @id;";
+              
+
+            var sqlcmd = new SqlCommand(sql, sqlconn);
+
+            sqlcmd.Parameters.AddWithValue("@id", user.Id);
+            sqlcmd.Parameters.AddWithValue("@username", user.Username);
+            sqlcmd.Parameters.AddWithValue("@password", user.Password);
+            sqlcmd.Parameters.AddWithValue("@firstname", user.Firstname);
+            sqlcmd.Parameters.AddWithValue("@lastname", user.Lastname);
+            sqlcmd.Parameters.AddWithValue("@phone", user.Phone);
+            sqlcmd.Parameters.AddWithValue("@email", user.Email);
+            sqlcmd.Parameters.AddWithValue("@isreviewer", user.IsReviewer);
+            sqlcmd.Parameters.AddWithValue("@isadmin", user.IsAdmin);
+            var rowsAffected = sqlcmd.ExecuteNonQuery();
+            //boolian expression returns true or false for a return of values esp boolian
+            return (rowsAffected == 1);
+
+        }
 
         //create is method name..doing instead of insert...create a new instance of user, fill w data
         public bool Create(User user)
         {
             var sql = $"INSERT into Users" +
-                " (Username, Password, Firstname, Lastname, Phone, Email, IsReviewer, IsAdmin) " +
-                //need spaces on quotes for string concats
-                " VALUES " +
-                //string values require single quote
-                $"( '{user.Username}' , '{user.Password}' , '{user.Firstname}', '{user.Lastname}' , " +
-                                            //boolian op and ternary operator
-                $" '{user.Phone}', '{user.Email}', {(user.IsReviewer  ? 1 : 0 )} , {(user.IsAdmin ? 1 : 0 )} )";
+                " (Username, Password, Firstname, Lastname, Phone, Email, IsReviewer, IsAdmin) " +    
+                " VALUES " +              
+                $"( @username , @password, @firstname, @lastname, @phone, @email, @isreviewer , @isadmin); ";
+
             var sqlcmd = new SqlCommand(sql, sqlconn);
+
+            sqlcmd.Parameters.AddWithValue("@username", user.Username);
+            sqlcmd.Parameters.AddWithValue("@password", user.Password);
+            sqlcmd.Parameters.AddWithValue("@firstname", user.Firstname);
+            sqlcmd.Parameters.AddWithValue("@lastname", user.Lastname);
+            sqlcmd.Parameters.AddWithValue("@phone", user.Phone);
+            sqlcmd.Parameters.AddWithValue("@email", user.Email);
+            sqlcmd.Parameters.AddWithValue("@isreviewr", user.IsReviewer);
+            sqlcmd.Parameters.AddWithValue("@isadmin", user.IsAdmin);
             var rowsAffected = sqlcmd.ExecuteNonQuery();
             //boolian expression returns true or false for a return of values esp boolian
             return (rowsAffected == 1);
@@ -188,3 +237,14 @@ namespace CSharp2SQLLib
     }
 
 }
+
+        }
+ /*       public bool CreateMultiple(List<User> users)
+        {
+            var success = true;
+            foreach(var user in users)
+            {
+                success = success && Create(user);
+            }
+        }
+*/

@@ -4,9 +4,24 @@ using static CSharp2SQLLib.user;
 
 namespace CSharp2SQL
 {
+
     class Program
+
     {
         static void Main(string[] args)
+        {
+            var sqlconn = new Connection("localhost\\sqlexpress", "PrsDb");
+
+            var vendorsController = new VendorsController(sqlconn);
+            var vendors = vendorsController.GetAll();
+
+            sqlconn.Disconnect();
+        }
+    }
+}
+
+
+        /*
         {
             //for the add to user
             var sqllib = new SqlLib();
@@ -15,6 +30,9 @@ namespace CSharp2SQL
             var user = sqllib.GetByPK(1002);
             user.Phone = "5135551212";
             var success = sqllib.Change(user);
+
+            //create class for sql connection
+
 
             //for the remove for sql delete
             var successD = sqllib.Delete(user);
@@ -40,3 +58,5 @@ namespace CSharp2SQL
         
     }
 }
+
+            */

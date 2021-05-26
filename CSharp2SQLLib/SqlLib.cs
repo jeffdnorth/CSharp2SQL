@@ -20,24 +20,72 @@ namespace CSharp2SQLLib
             {
                 sqldatareader.Close();
                 return null;
-
             }
             sqldatareader.Read();
             var user = new User()
             {
                 Id = Convert.ToInt32(sqldatareader["Id"]),
-            UserName = Convert.ToString(sqldatareader["Username"]),
-            Password = Convert.ToString(sqldatareader["Password"]),
-            Firstname = Convert.ToString(sqldatareader["Firstname"]),
-            Lastname = Convert.ToString(sqldatareader["Lastname"]),
-            Phone = Convert.ToString(sqldatareader["Phone"]),
-            Email = Convert.ToString(sqldatareader["Email"]),
-            IsReviewer = Convert.ToBoolean(sqldatareader["IsReviewer"]),
-            IsAdmin = Convert.ToBoolean(sqldatareader["IsAdmin"]),           
+                UserName = Convert.ToString(sqldatareader["Username"]),
+                Password = Convert.ToString(sqldatareader["Password"]),
+                Firstname = Convert.ToString(sqldatareader["Firstname"]),
+                Lastname = Convert.ToString(sqldatareader["Lastname"]),
+                Phone = Convert.ToString(sqldatareader["Phone"]),
+                Email = Convert.ToString(sqldatareader["Email"]),
+                IsReviewer = Convert.ToBoolean(sqldatareader["IsReviewer"]),
+                IsAdmin = Convert.ToBoolean(sqldatareader["IsAdmin"]),
             };
             sqldatareader.Close();
             return user;
         }
+
+        /*
+          public Vendors GetByPK(int id)
+            {
+            var sql = $"SELECT * from vendors Where id = {id};";
+                var sqlcmd = new SqlCommand(sql, sqlconn);
+                var sqldatareader = sqlcmd.ExecuteReader();
+            if(!sqldatareader.HasRows)
+                {
+                    sqldatareader.Close();
+                    return null;
+                }
+            sqldatareader.Read();
+            var vendor = new Vendor()
+                {
+                    Id = Convert.ToInt32(sqldatareader["Id"]),
+                    Code = Convert.ToInt32(sqldatareader["Code"]),
+                    Name = Convert.ToInt32(sqldatareader["Name"]),
+                    Address = Convert.ToInt32(sqldatareader["Address"]),
+                    City = Convert.ToInt32(sqldatareader["City"]),
+                    Zip = Convert.ToInt32(sqldatareader["Zip"]),
+                    Phone = Convert.ToInt32(sqldatareader["Phone"]),
+                    Email = Convert.ToInt32(sqldatareader["Email"]),
+                    };
+                    sqldatareader.Close();
+                    return vendor;
+                 }
+
+        public List<Vendors> GetAllVendors()
+            {
+            var sql = "SELECT * From Vendors;";
+            var SQLCMD = new SqlCommand(sql, sqlconn);
+            var sqldatareader = SQLCMD.ExecuteReader();
+            var vendors = new List<Vendors>();
+            while (sqldatareader.Read())
+            {       
+                var id = Convert.ToInt32(sqldatareader["Id"]);
+                var code = Convert.ToString(sqldatareader["Code"]);
+                var name = Convert.ToString(sqldatareader["Name"]);
+                var address = Convert.ToString(sqldatareader["Address"]);
+                var city = Convert.ToString(sqldatareader["City"]);
+                var state = Convert.ToString(sqldatareader["State"]);
+                var zip = Convert.ToString{ (sqldatareader["Zip"]);
+                var phone = Convert.ToString(sqldatareader["Phone"]);
+                var email = Convert.ToString(sqldatareader"Email");
+                }
+            }
+         
+           */
 
         public List<User> GetAllUsers()
         {

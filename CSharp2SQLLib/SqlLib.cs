@@ -11,6 +11,24 @@ namespace CSharp2SQLLib
 
         public SqlConnection sqlconn { get; set; }
 
+        //create is method name..doing instead of insert...create a new instance of user, fill w data
+        public bool Create(User user)
+        {
+            var sql = $"INSERT into Users" +
+                " (Username, Password, Firstname, Lastname, Phone, Email, IsReviewer, IsAdmin) " +
+                //need spaces on quotes for string concats
+                " VALUES " +
+                //string values require single quote
+                $"( '{user.Username}' , '{user.Password}' , '{user.Firstname}', '{user.Lastname}' , " +
+                                            //boolian op and ternary operator
+                $" '{user.Phone}', '{user.Email}', {(user.IsReviewer  ? 1 : 0 )} , {(user.IsAdmin ? 1 : 0 )} )";
+            var sqlcmd = new SqlCommand(sql, sqlconn);
+            var rowsAffected = sqlcmd.ExecuteNonQuery();
+            //boolian expression returns true or false for a return of values esp boolian
+            return (rowsAffected == 1);
+        }
+
+
         public User GetByPK(int id)
         {
             var sql = $"SELECT * from users Where id = {id};";
@@ -25,7 +43,7 @@ namespace CSharp2SQLLib
             var user = new User()
             {
                 Id = Convert.ToInt32(sqldatareader["Id"]),
-                UserName = Convert.ToString(sqldatareader["Username"]),
+                Username = Convert.ToString(sqldatareader["Username"]),
                 Password = Convert.ToString(sqldatareader["Password"]),
                 Firstname = Convert.ToString(sqldatareader["Firstname"]),
                 Lastname = Convert.ToString(sqldatareader["Lastname"]),
@@ -40,7 +58,7 @@ namespace CSharp2SQLLib
 
         //
 
-        public Vendors GetByPK(int id)
+        public Vendors VendorGetByPK(int id)
         {
             var sql = $"SELECT * from vendors Where id = {id};";
             var sqlcmd = new SqlCommand(sql, sqlconn);
@@ -97,7 +115,7 @@ namespace CSharp2SQLLib
                     Phone = phone,
                     Email = email,
                 };
-                vendors.Add(vendors);
+                vendors.Add(vendor);
             }
             sqldatareader.Close();
             return vendors;
@@ -125,7 +143,7 @@ namespace CSharp2SQLLib
                 var user = new User()
                 {
                     Id = id,
-                    UserName = username,
+                    Username = username,
                     Password = password,
                     Firstname = firstname,
                     Lastname = lastname,
@@ -140,6 +158,7 @@ namespace CSharp2SQLLib
             sqldatareader.Close();
             return users;
         }
+
         public void Connect()
         {
             var connStr = "server =localhost\\sqlexpress;" +

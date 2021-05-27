@@ -15,6 +15,11 @@ namespace CSharp2SQLLib
         public string PhotoPath { get; set; }
         public int VendorId { get; set; }
         public Vendors Vendor { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Id} | {Code} | {Name} | {Address} | {City} | {State} | {Zip} | {Phone} | {Email} ;
+        }
     }
 }
 

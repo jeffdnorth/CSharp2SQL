@@ -8,7 +8,24 @@ namespace CSharp2SQLLib
     public class ProductsController
     {
         private static Connection connection { get; set; }
-            
+        
+        //new private method to remove duplication
+        private Product FillProductfromSQLRow(SqlDataReader reader)
+        var product = new Product()
+        {
+            Id = Convert.ToInt32(reader["Id"]),
+            PartNbr = Convert.ToString(reader["PartNbr"]),
+            Name = Convert.ToString(reader["Name"]),
+            Price = Convert.ToDecimal(reader["Price"]),
+            Unit = Convert.ToString(reader["Unit"]),
+            PhotoPath = Convert.ToString(reader["PhotPath"]),
+            VendorId = Convert.ToInt32(reader["VendorId"]),
+        };
+            return Product;
+    }       
+/*
+ * 
+ */
         public List<Product> GetAll()
         {
             var sql = "SELECT * from Products;";
@@ -27,6 +44,9 @@ namespace CSharp2SQLLib
                     PhotoPath = Convert.ToString(reader["PhotPath"]),
                     VendorId = Convert.ToInt32(reader["VendorId"]),
                 };
+/*the above is duplicated we are going to make it more elegant
+ * 
+ */
                 products.Add(product);
             }
                 reader.Close();
@@ -58,6 +78,7 @@ namespace CSharp2SQLLib
             var reader = cmd.ExecuteReader();
             reader.Read();
             var product = new Product()
+            //var product = FillByProduct
                {
                 Id = Convert.ToInt32(reader["Id"], 
                 PartNbr = Convert.ToString(reader["PartNbr"]),
@@ -79,12 +100,14 @@ namespace CSharp2SQLLib
                 $"( @PartNbr, @name, @Price, @Unit, @PhotPath, @VendorId) ";
            
             var sqlcmd = new SqlCommand(sql, connection.SqlConn);
+            //cmd.Parameters.AddWithValue("
             {
                 sqlcmd.Parameters.AddWithValue("@partnbr", product.PartNbr);
                 sqlcmd.Parameters.AddWithValue("@name", product.Name);
                 sqlcmd.Parameters.AddWithValue("@price", product.Price);
                 sqlcmd.Parameters.AddWithValue("@unit", product.Unit);
-                sqlcmd.Parameters.AddWithValue("@photopath", product.PhotoPath);
+                //DBNulll is C# null...diff than SQL
+                sqlcmd.Parameters.AddWithValue("@photopath", (object)product.PhotoPath ?? DBNull.Value);
                 sqlcmd.Parameters.AddWithValue("@vendorid", product.VendorId);
                 var rowsAffected = sqlcmd.ExecuteNonQuery();
                 return (rowsAffected == 1);

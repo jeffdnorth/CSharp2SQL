@@ -9,6 +9,23 @@ namespace CSharp2SQLLib
     {
         private static Connection connection { get; set; }
 
+        private Vendor FillVendorFromReader(SqlDataReader reader)
+        {
+            var vendor = new Vendor()
+            {
+                Id = Convert.ToInt32(reader["Id"]),
+
+                Code = Convert.ToString(reader["Code"]),
+                Name = Convert.ToString(reader["Name"]),
+                Address = Convert.ToString(reader["Address"]),
+                City = Convert.ToString(reader["City"]),
+                State = Convert.ToString(reader["State"]),
+                Zip = Convert.ToString(reader["Zip"]),
+                Phone = Convert.ToString(reader["Phone"]),
+                Email = Convert.ToString(reader["Email"])
+            };
+            return vendor;
+        }
         public List<Vendor> GetAll()
         {
             var sql = "SELECT * from Vendors;";
@@ -17,7 +34,7 @@ namespace CSharp2SQLLib
             var vendors = new List<Vendor>();
             while (reader.Read())
             {
-                var vendor = new Vendor()
+                var vendor = FillVendorFromReader(reader);
                 {
                     Id = Convert.ToInt32(reader["Id"]),
 

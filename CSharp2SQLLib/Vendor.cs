@@ -16,6 +16,11 @@ namespace CSharp2SQLLib
         public string Phone { get; set; }
         public string Email { get; set; }
 
+        public override string ToString()
+        {
+            return $"{Id} | {Code} | {Name} | {Address} | {City} | {State} | {Zip} | {Phone} | {Email} ;
+        }
+
 
     }
 }

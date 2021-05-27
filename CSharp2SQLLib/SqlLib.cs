@@ -78,6 +78,17 @@ namespace CSharp2SQLLib
         }
 
 
+        public bool CreateMultiple(List<User>users)
+            {
+            var success = true;
+               foreach (var user in users)
+                 {
+                success = success && Create(user);
+                //success is equal to succe (true AND if user is created = true, if not created = false
+                 }
+            return success;
+            }
+
         public User GetByPK(int id)
         {
             var sql = $"SELECT * from users Where id = {id};";

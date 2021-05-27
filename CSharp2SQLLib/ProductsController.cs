@@ -50,6 +50,26 @@ namespace CSharp2SQLLib
             ProductsController.connection = connection;
         }
 
+        public Product GetByPk(int, id)
+        {
+            var sql = "SELECT * from Products Where ID = @id,";
+            var cmd = new SqlCommand(sql, connection.SqlConn);
+            cmd.Parameters.AddWithValue("@id, id");
+            var reader = cmd.ExecuteReader();
+            reader.Read();
+            var product = new Product()
+               {
+                Id = Convert.ToInt32(reader["Id"], 
+                PartNbr = Convert.ToString(reader["PartNbr"]),
+                Name = Convert.ToString(reader["Name"]),
+                Price = Convert.ToString(reader["Price"]),
+                Unit = 
+
+
+               }
+             
+        }
+
         //CREATE (instead of using Insert)
         public bool Create(Product product)
         {

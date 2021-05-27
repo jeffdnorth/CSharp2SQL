@@ -9,6 +9,11 @@ namespace CSharp2SQLLib
     {
         private static Connection connection { get; set; }
 
+        public VendorsController(Connection connection)
+        {
+            VendorsController.connection = connection;
+        }
+
         private Vendor FillVendorFromReader(SqlDataReader reader)
         {
             var vendor = new Vendor()
@@ -53,12 +58,6 @@ namespace CSharp2SQLLib
             reader.Close();
             return vendors;
         }
-
-        public VendorsController(Connection connection)
-        {
-            VendorsController.connection = connection;
-        }
-
 
         //create is method name..doing instead of insert...create a new instance of user
 

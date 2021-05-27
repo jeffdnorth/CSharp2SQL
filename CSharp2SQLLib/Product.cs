@@ -14,11 +14,12 @@ namespace CSharp2SQLLib
         public string Unit { get; set; }
         public string PhotoPath { get; set; }
         public int VendorId { get; set; }
-        public Vendors Vendor { get; set; }
+
+        public Vendor Vendor { get; set; }
 
         public override string ToString()
         {
-            return $"{Id} | {Code} | {Name} | {Address} | {City} | {State} | {Zip} | {Phone} | {Email} ;
+            return $"{Id} | {PartNbr} | {Name} | {Price} | {Unit} | {Vendor} ";
         }
     }
 }

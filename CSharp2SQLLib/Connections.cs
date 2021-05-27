@@ -7,7 +7,7 @@ namespace CSharp2SQLLib
 {
     public class Connection
     {
-        //property for sQL Conn
+        //property for Sql Conn
         public SqlConnection SqlConn { get; set; }
 
         //constructor to pass in server parameter and data base
@@ -23,8 +23,8 @@ namespace CSharp2SQLLib
         }
         public Connection(string server, string database)
         {
-            var ConnStr = $"server={server};database={database};trusted_connection=true;";
-            SqlConn = new SqlConnection(ConnStr);
+            var connStr = $"server={server};database={database};trusted_connection=true;";
+            SqlConn = new SqlConnection(connStr);
             SqlConn.Open();
             if (SqlConn.State != System.Data.ConnectionState.Open)
             {

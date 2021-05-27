@@ -18,7 +18,8 @@ namespace CSharp2SQLLib
 
         public override string ToString()
         {
-            return $"{Id} | {Code} | {Name} | {Address} | {City} | {State} | {Zip} | {Phone} | {Email} ;
+            return $"{Id} | {Code} | {Name} | {Address} | {City} | {State} | {Zip} | {Phone} | {Email}";
+
         }
 
 

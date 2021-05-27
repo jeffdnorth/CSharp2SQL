@@ -4,8 +4,7 @@ using System.Text;
 
 namespace CSharp2SQLLib
 {
-    public class user
-    {
+ 
         public class User
         {
             public int Id { get; set; }
@@ -18,5 +17,5 @@ namespace CSharp2SQLLib
             public bool  IsReviewer { get; set; }
             public bool IsAdmin { get; set; }
         }
-    }
+    
 }

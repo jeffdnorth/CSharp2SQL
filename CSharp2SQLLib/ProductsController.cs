@@ -26,7 +26,7 @@ namespace CSharp2SQLLib
 
         private Product FillProductFromSqlRow(SqlDataReader reader)
         {
-        var product new Product()
+        var product = new Product()
              {
             Id = Convert.ToInt32(reader["Id"]),
             PartNbr = Convert.ToString(reader["PartNbr"]),
@@ -67,11 +67,11 @@ namespace CSharp2SQLLib
         {
             var sql = "SELECT * from Products Where Id = id; ";
             var cmd = new SqlCommand(sql, connection.SqlConn);
-            cmd.Parameters.AddWithValue("@id, id");
+            cmd.Parameters.AddWithValue("@id", id);
             var reader = cmd.ExecuteReader();
             reader.Read();
-            var product = new Product()
-            {
+            var product = FillProductFromSqlRow(reader);
+           /* {
                 Id = Convert.ToInt32(reader["Id"]),
                 PartNbr = Convert.ToString(reader["PartNbr"]),
                 Name = Convert.ToString(reader["Name"]),
@@ -79,7 +79,7 @@ namespace CSharp2SQLLib
                 Unit = Convert.ToString(reader["Unit"]),
                 PhotoPath = Convert.ToString(reader["PhotPath"]),
                 VendorId = Convert.ToInt32(reader["VendorId"]),
-            };
+            }; */
             reader.Close();
             GetVendorForProduct(product);
             return product;
@@ -87,28 +87,33 @@ namespace CSharp2SQLLib
 
         public bool Create(Product product)
         {
-            var sql = "INSERT into Products"
-                        + " PartNbr, Name, Price, Unit, PhotPath, VendorId); ";
+            var sql = "INSERT into Products "
+                        + " PartNbr, Name, Price, Unit, PhotoPath, VendorId) "
+                        + " VALUES (@partnbr, @name, @price, @unit, @photopath, @vendorid); ";
             var cmd = new SqlCommand(sql, connection.SqlConn);
             //cmd.Parameters.AddWithValue("@id, id);
+
             cmd.Parameters.AddWithValue("@partnbr", product.PartNbr);
             cmd.Parameters.AddWithValue("@name", product.Name);
             cmd.Parameters.AddWithValue("@unit", product.Unit);
-            cmd.Parameters.AddWithValue("@photopath", product.PhotoPath);
+            cmd.Parameters.AddWithValue("@photopath", (object)product.PhotoPath ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@vendorid", product.VendorId);
-            var rowsAffected == 1);
+            var rowsAffected = cmd.ExecuteNonQuery);
             return (rowsAffected == 1);
         }
 
-        private void GetVendorForProduct(List<Products> products)
+        private void GetVendorForProduct(List<Product> products)
         {
             foreach (var product in products)
+            {
                 GetVendorForProduct(product);
+            }
         }
 
-        private void GetVendorForProcuct(Product product)
+        private void GetVendorForProduct(Product product)
         {
-            var vendCtrl = vendCtrl.GetByPK(product.VendorId);
+            var vendCtrl = new VendorsController(connection);
+            product.Vendor = vendCtrl.GetByPk(product.VendorId);
         }
 
         public ProductsController(Connection connection)
@@ -117,5 +122,5 @@ namespace CSharp2SQLLib
         }
     }
 }
-        //
+        
 

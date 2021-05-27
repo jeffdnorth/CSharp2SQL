@@ -1,17 +1,18 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
-using static CSharp2SQLLib.user;
+
+/*using static CSharp2SQLLib.user;
+ */
 
 namespace CSharp2SQLLib
 {
-    public class SqlLib
-    {
-        public static string About { get; set; } = "About CSharp2SqlLib";
+    public class SqlLib 
+    { 
         public SqlConnection sqlconn { get; set; }
 
         // delete method
-        public bool Delete (User user)
+        public bool Remove (User user)
         {
             var sql = $"DELETE from Users " +
                 " Where Id = @id ; ";        
@@ -21,7 +22,6 @@ namespace CSharp2SQLLib
             //boolian expression returns true or false for a return of values esp boolian
             return (rowsAffected == 1);           
         }
-
 
         //change method
         public bool Change (User user)
@@ -116,12 +116,11 @@ namespace CSharp2SQLLib
             return user;
         }
 
-        //
-
+/*
         public Vendors VendorGetByPK(int id)
         {
             var sql = $"SELECT * from vendors Where id = {id};";
-            var sqlcmd = new SqlCommand(sql, sqlconn);
+            var sqlcmd = new SqlCommand(sql, Sqlconn);
             var sqldatareader = sqlcmd.ExecuteReader();
             if (!sqldatareader.HasRows)
             {
@@ -144,12 +143,12 @@ namespace CSharp2SQLLib
             return vendor;
         }
 
-        //
-
+   */
+/*
         public List<Vendors> GetAllVendors()
         {
             var sql = "SELECT * From Vendors;";
-            var SQLCMD = new SqlCommand(sql, sqlconn);
+            var SQLCMD = new SqlCommand(sql, Sqlconn);
             var sqldatareader = SQLCMD.ExecuteReader();
             var vendors = new List<Vendors>();
             while (sqldatareader.Read())
@@ -181,7 +180,7 @@ namespace CSharp2SQLLib
             return vendors;
         }
 
-        //
+        */
 
         public List<User> GetAllUsers()
         {
@@ -224,7 +223,7 @@ namespace CSharp2SQLLib
             var connStr = "server =localhost\\sqlexpress;" +
                           "database=PrsDb;" +
                           "trusted_connection=true;";
-            //creat instance of connection
+            //create instance of connection
             sqlconn = new SqlConnection(connStr);
             sqlconn.Open();
 

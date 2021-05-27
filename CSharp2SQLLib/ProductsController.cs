@@ -8,24 +8,16 @@ namespace CSharp2SQLLib
     public class ProductsController
     {
         private static Connection connection { get; set; }
-        
-        //new private method to remove duplication
-        private Product FillProductfromSQLRow(SqlDataReader reader)
-        var product = new Product()
+
+        //CREATE (instead of using Insert)
+        public bool Create(Product product, string VendorCode)
         {
-            Id = Convert.ToInt32(reader["Id"]),
-            PartNbr = Convert.ToString(reader["PartNbr"]),
-            Name = Convert.ToString(reader["Name"]),
-            Price = Convert.ToDecimal(reader["Price"]),
-            Unit = Convert.ToString(reader["Unit"]),
-            PhotoPath = Convert.ToString(reader["PhotPath"]),
-            VendorId = Convert.ToInt32(reader["VendorId"]),
-        };
-            return Product;
-    }       
-/*
- * 
- */
+            var vendCtrl = new VendorsController(connection);
+            var vendor = vendCtrl.GetByCode(VendorCode);
+            product.VendorId = vendor.Id;
+            return Create(product);
+        }
+        //
         public List<Product> GetAll()
         {
             var sql = "SELECT * from Products;";
@@ -44,114 +36,66 @@ namespace CSharp2SQLLib
                     PhotoPath = Convert.ToString(reader["PhotPath"]),
                     VendorId = Convert.ToInt32(reader["VendorId"]),
                 };
-/*the above is duplicated we are going to make it more elegant
- * 
- */
                 products.Add(product);
             }
-                reader.Close();
-
-                foreach(var product in products)
-                {
-                GetVendorForProduct(product);
-                }
-         
-                 return products;
+            reader.Close();
+            //GetVendorForProducts(products)
+            return products;
         }
-                
 
-        private void GetVendorForProduct(Product product)
+        public Product GetByPK(int id)
         {
-            throw new NotImplementedException();
+            var sql = "SELECT * from Products Where Id = id; ";
+            var cmd = new SqlCommand(sql, connection.SqlConn);
+            cmd.Parameters.AddWithValue("@id, id");
+            var reader = cmd.ExecuteReader();
+            reader.Read();
+            var product = new Product()
+            {
+                Id = Convert.ToInt32(reader["Id"]),
+                PartNbr = Convert.ToString(reader["PartNbr"]),
+                Name = Convert.ToString(reader["Name"]),
+                Price = Convert.ToDecimal(reader["Price"]),
+                Unit = Convert.ToString(reader["Unit"]),
+                PhotoPath = Convert.ToString(reader["PhotPath"]),
+                VendorId = Convert.ToInt32(reader["VendorId"]),
+            };
+            reader.Close();
+            GetVendorForProduct(product);
+            return product;
+        }
+
+        public bool Create(Product product)
+        {
+            var sql = "INSERT into Products"
+                        + " PartNbr, Name, Price, Unit, PhotPath, VendorId); ";
+            var cmd = new SqlCommand(sql, connection.SqlConn);
+            //cmd.Parameters.AddWithValue("@id, id);
+            cmd.Parameters.AddWithValue("@partnbr", product.PartNbr);
+            cmd.Parameters.AddWithValue("@name", product.Name);
+            cmd.Parameters.AddWithValue("@unit", product.Unit);
+            cmd.Parameters.AddWithValue("@photopath", product.PhotoPath);
+            cmd.Parameters.AddWithValue("@vendorid", product.VendorId);
+            var rowsAffected == 1);
+            return (rowsAffected == 1);
+        }
+
+        private void GetVendorForProduct(List<Products> products)
+        {
+            foreach (var product in products)
+                GetVendorForProduct(product);
+        }
+
+        private void GetVendorForProcuct(Product product)
+        {
+            var vendCtrl = vendCtrl.GetByPK(product.VendorId);
         }
 
         public ProductsController(Connection connection)
         {
             ProductsController.connection = connection;
         }
-
-        public Product GetByPk(int, id)
-        {
-            var sql = "SELECT * from Products Where ID = @id,";
-            var cmd = new SqlCommand(sql, connection.SqlConn);
-            cmd.Parameters.AddWithValue("@id, id");
-            var reader = cmd.ExecuteReader();
-            reader.Read();
-            var product = new Product()
-            //var product = FillByProduct
-               {
-                Id = Convert.ToInt32(reader["Id"], 
-                PartNbr = Convert.ToString(reader["PartNbr"]),
-                Name = Convert.ToString(reader["Name"]),
-                Price = Convert.ToString(reader["Price"]),
-                Unit = 
-
-
-               }
-             
-        }
-
-        //CREATE (instead of using Insert)
-        public bool Create(Product product)
-        {
-            var sql = $"Insert into Products" +
-                " ( PartnNbr,Name, Price, Unit, PhotPath, VendorId ) " +
-                " Values " +
-                $"( @PartNbr, @name, @Price, @Unit, @PhotPath, @VendorId) ";
-           
-            var sqlcmd = new SqlCommand(sql, connection.SqlConn);
-            //cmd.Parameters.AddWithValue("
-            {
-                sqlcmd.Parameters.AddWithValue("@partnbr", product.PartNbr);
-                sqlcmd.Parameters.AddWithValue("@name", product.Name);
-                sqlcmd.Parameters.AddWithValue("@price", product.Price);
-                sqlcmd.Parameters.AddWithValue("@unit", product.Unit);
-                //DBNulll is C# null...diff than SQL
-                sqlcmd.Parameters.AddWithValue("@photopath", (object)product.PhotoPath ?? DBNull.Value);
-                sqlcmd.Parameters.AddWithValue("@vendorid", product.VendorId);
-                var rowsAffected = sqlcmd.ExecuteNonQuery();
-                return (rowsAffected == 1);
-            }
-        }
-
-        public bool Change(Product product)
-        {
-            var sql = $"Update Set " +
-                " PartNbr = @partNbr, " +
-                " name =  @name, " +
-                " Price = @price, " +
-                " Unit = @unit, " +
-                " PhotPath = @photoPath, " +
-                " VendorId = @vendorid, ";
-
-            var sqlcmd = new SqlCommand(sql, connection.SqlConn);
-
-            sqlcmd.Parameters.AddWithValue("@partnbr", product.PartNbr);
-            sqlcmd.Parameters.AddWithValue("@name", product.Name);
-            sqlcmd.Parameters.AddWithValue("@price", product.Price);
-            sqlcmd.Parameters.AddWithValue("@unit", product.Unit);
-            sqlcmd.Parameters.AddWithValue("@photopath", product.PhotoPath);
-            sqlcmd.Parameters.AddWithValue("@vendorid", product.VendorId);
-
-            var rowsAffected = sqlcmd.ExecuteNonQuery();
-            //boolian expression returns true or false for a return of values esp boolian
-            return (rowsAffected == 1);
-        }
-        
-        public bool Delete(Product product)
-        {
-            var sql = $"DELETE from product" +
-                "Where Id = @id ; ";
-
-            var sqlcmd = new SqlCommand(sql, connection.SqlConn);
-            sqlcmd.Parameters.AddWithValue("@id", product.Id);
-            var rowsAffected = sqlcmd.ExecuteNonQuery();
-            //boolian expression returns true or false for a return of values esp boolian
-            return (rowsAffected == 1);
-
-        }
-        
     }
 }
-
+        //
 

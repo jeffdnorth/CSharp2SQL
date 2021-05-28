@@ -16,6 +16,10 @@ namespace CSharp2SQLLib
             public string Email { get; set; }
             public bool  IsReviewer { get; set; }
             public bool IsAdmin { get; set; }
+        public override string ToString()
+        {
+            return $" {Id} | {Username} | {Password} | {Firstname} | {Lastname} | {Phone} | {Email} | {IsReviewer} | {IsAdmin} ";
         }
+    }
     
 }

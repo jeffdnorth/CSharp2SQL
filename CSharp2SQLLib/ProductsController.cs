@@ -16,6 +16,8 @@ namespace CSharp2SQLLib
         /// <returns>True if successful otherwise false</returns>
 
         //CREATE (instead of using Insert)
+
+
         public bool Create(Product product, string VendorCode)
         {
             var vendCtrl = new VendorsController(connection);

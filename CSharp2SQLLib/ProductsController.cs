@@ -98,7 +98,7 @@ namespace CSharp2SQLLib
             cmd.Parameters.AddWithValue("@unit", product.Unit);
             cmd.Parameters.AddWithValue("@photopath", (object)product.PhotoPath ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@vendorid", product.VendorId);
-            var rowsAffected = cmd.ExecuteNonQuery);
+            var rowsAffected = cmd.ExecuteNonQuery();
             return (rowsAffected == 1);
         }
 

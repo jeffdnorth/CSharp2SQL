@@ -1,7 +1,6 @@
 ﻿using CSharp2SQLLib;
 using System;
 using System.Linq;
-using static CSharp2SQLLib.user;
 
 namespace CSharp2SQL
 {

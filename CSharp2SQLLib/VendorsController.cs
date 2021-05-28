@@ -40,7 +40,7 @@ namespace CSharp2SQLLib
                 Phone = Convert.ToString(reader["Phone"]),
                 Email = Convert.ToString(reader["Email"])
             };
-            reader.Close);
+            reader.Close();
             return vendor;
 
         }
